@@ -1,0 +1,25 @@
+From ab912046f9fec203409f3a574a604081959054af Mon Sep 17 00:00:00 2001
+From: Oliver Kurth <okurth@gmail.com>
+Date: Fri, 30 Jun 2023 17:51:09 -0700
+Subject: [PATCH] remove stdc++fs
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 47320878..39730bac 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -274,7 +274,7 @@ else()
+       util
+       resolv
+       atomic
+-      stdc++fs)
++      )
+ endif()
+ 
+ IF(Unwind_FOUND)
+-- 
+2.34.1
+
