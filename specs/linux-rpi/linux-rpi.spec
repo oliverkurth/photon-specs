@@ -19,22 +19,15 @@ BuildArch:      aarch64
 %define _modulesdir /lib/modules/%{uname_r}
 
 Source0:        https://github.com/raspberrypi/linux/archive/refs/tags/%{tag}.tar.gz
+%define sha512  %{name}=0c8252833bb737977c0981ed48764ff9742de7cb494fefec532c90312e0d8e0e48a230dd14a0d6f99b54b015e6c91e647b579f2ef7408b80e349a547767d9925
 Source2:        initramfs.trigger
 Source6:        scriptlets.inc
 Source18:       spec_install_post.inc
 Source19:       %{name}-dracut-%{_arch}.conf
 
 BuildRequires:  bc
-BuildRequires:  kmod-devel
-BuildRequires:  glib-devel
-BuildRequires:  elfutils-devel
 BuildRequires:  openssl-devel
-BuildRequires:  procps-ng-devel
-BuildRequires:  audit-devel
-BuildRequires:  elfutils-libelf-devel
-BuildRequires:  binutils-devel
-BuildRequires:  xz-devel
-BuildRequires:  slang-devel
+BuildRequires:  xz
 BuildRequires:  bison
 
 
@@ -51,6 +44,9 @@ This Linux package contains the Linux kernel for the Raspberry Pi
 %package dtb
 Summary:        Raspberry DTB files
 Group:          System Environment/Kernel
+Conflicts: dtb-rpi-overlay
+Conflicts: dtb-rpi3
+Conflicts: dtb-rpi4
 %description dtb
 The device tree binary files for the Raspberry Pi
 
