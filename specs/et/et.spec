@@ -6,7 +6,7 @@ Summary:        Remote shell that survives IP roaming and disconnect
 License:        ASL 2.0
 URL:            https://mistertea.github.io/EternalTerminal/
 Source0:        https://github.com/MisterTea/EternalTerminal/archive/et-v%{version}.tar.gz
-Source1:        et.xml
+%define sha512  %{name}=36cc593c4686730557954a3998c6be50f20b7d5b53f65409ea4cbf171956f9361db920111460d95974277627380ef4f51fb0b74a0b235b861d3d35fb5abc2b35
 Patch0:         0001-remove-stdc-fs.patch
 
 BuildRequires:  boost-devel

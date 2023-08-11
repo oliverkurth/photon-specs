@@ -5,7 +5,7 @@ Summary: Mobile shell that supports roaming and intelligent local echo
 
 License: GPLv3+
 URL:     https://mosh.mit.edu/
-Source0: https://mosh.mit.edu/mosh-%{version}.tar.gz
+Source0: https://mosh.org/mosh-%{version}.tar.gz
 %define sha512 %{name}=38c11f52ff1e42965b50a22bf6de80b0fa8ebbff841d825e760abf69c788a2bf5f34e6f7fc047574d595118334eef9edf8da5520b52cdde3ac1a79d7ad70312e
 
 BuildRequires: libutempter-devel
