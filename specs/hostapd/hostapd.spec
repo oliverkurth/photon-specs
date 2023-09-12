@@ -116,6 +116,6 @@ cp %{name}/logwatch/README ./README.logwatch
 %{_unitdir}/%{name}.service
 
 %changelog
-* Sun Jun 11 Oliver Kurth <okurth@gmail.com> 2.10-1
+* Sun Jun 11 2023 Oliver Kurth <okurth@gmail.com> 2.10-1
 - initial build, adapted from Fedora
 
