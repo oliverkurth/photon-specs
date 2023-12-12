@@ -1,12 +1,12 @@
 Name:           et
-Version:        6.2.4
+Version:        6.2.8
 Release:        1
 Summary:        Remote shell that survives IP roaming and disconnect
 
 License:        ASL 2.0
 URL:            https://mistertea.github.io/EternalTerminal/
 Source0:        https://github.com/MisterTea/EternalTerminal/archive/et-v%{version}.tar.gz
-%define sha512  %{name}=36cc593c4686730557954a3998c6be50f20b7d5b53f65409ea4cbf171956f9361db920111460d95974277627380ef4f51fb0b74a0b235b861d3d35fb5abc2b35
+%define sha512  %{name}=0ec06dee3d51e89eb7c03ba062cb771dca228ad06685104361c5e3cc7239a91d67530c95c686c4ede41584ad0f894aa35013499bd3a051b8da7bd0303d4fa9ae
 Patch0:         0001-remove-stdc-fs.patch
 
 BuildRequires:  boost-devel
@@ -40,7 +40,8 @@ interrupting the session.
 
 %build
 %cmake \
-  -DDISABLE_VCPKG=TRUE
+  -DDISABLE_VCPKG=TRUE \
+  -DCMAKE_EXE_LINKER_FLAGS="-Wl,--copy-dt-needed-entries" -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--copy-dt-needed-entries"
 %cmake_build
 
 
@@ -51,6 +52,8 @@ mkdir -p \
   %{buildroot}%{_sysconfdir}
 install -m 0644 -p systemctl/et.service %{buildroot}%{_unitdir}/et.service
 install -m 0644 -p etc/et.cfg %{buildroot}%{_sysconfdir}/et.cfg
+rm -rf %{buildroot}/usr/lib64/cmake
+rm -f %{buildroot}/usr/include/httplib.h
 
 %post
 %systemd_post et.service
@@ -75,6 +78,7 @@ install -m 0644 -p etc/et.cfg %{buildroot}%{_sysconfdir}/et.cfg
 
 
 %changelog
-%changelog
+* Tue Dec 12 2023 Oliver Kurth <okurth@vmware.com> - 6.2.8-1
+- update to 6.2.8
 * Thu Jun 29 2023 Oliver Kurth <okurth@vmware.com> - 6.2.4-1
 - initial package
