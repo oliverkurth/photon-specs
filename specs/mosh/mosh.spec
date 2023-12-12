@@ -45,6 +45,7 @@ This provides the mosh server
 %setup -q
 
 %build
+export CPPFLAGS=-std=c++17
 %configure --disable-silent-rules
 %make_build
 
