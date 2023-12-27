@@ -1,12 +1,12 @@
 %define arch arm64
 %define archdir arm64
 
-%define tag 1.20230405
+%define tag stable_20231123
 
 Summary:        Kernel
 Name:           linux-rpi
 # check Makefile at tag:
-Version:        6.1.21
+Version:        6.1.63
 Release:        1%{?dist}
 License:        GPLv2
 URL:            https://github.com/raspberrypi/linux
@@ -19,7 +19,7 @@ BuildArch:      aarch64
 %define _modulesdir /lib/modules/%{uname_r}
 
 Source0:        https://github.com/raspberrypi/linux/archive/refs/tags/%{tag}.tar.gz
-%define sha512  %{name}=0c8252833bb737977c0981ed48764ff9742de7cb494fefec532c90312e0d8e0e48a230dd14a0d6f99b54b015e6c91e647b579f2ef7408b80e349a547767d9925
+%define sha512  %{name}=5ca2ed0fabc098687952230d7161ce51f078faf5de3fa55bbf2482054edb7ecd1fdcc247d82f9db14bb4e08030e679942d8ab845e171c08a7694ef6f58bc1f92
 Source2:        initramfs.trigger
 Source6:        scriptlets.inc
 Source18:       spec_install_post.inc
@@ -170,5 +170,7 @@ ln -sf linux-%{uname_r}.cfg /boot/photon.cfg
 
 
 %changelog
+* Tue Dec 26 2023 Oliver Kurth <okurth@gmail.com> 6.1.63-1
+- update to 6.1.63
 * Sun Jul 09 2023 Oliver Kurth <okurth@vmware.com> 6.1.21-1
 - initial RPi package
