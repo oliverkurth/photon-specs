@@ -8,8 +8,7 @@ URL:          https://github.com/oliverkurth/vfat-fuse
 Vendor:       Broadcom, Inc.
 Distribution: Photon
 
-#Source0: https://github.com/oliverkurth/%{name}/archive/refs/tags/%{name}-v%{version}.tar.gz
-Source0: %{name}-%{version}.tar.gz
+Source0: https://github.com/oliverkurth/%{name}/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  pkg-config
 BuildRequires:  fuse3-devel
