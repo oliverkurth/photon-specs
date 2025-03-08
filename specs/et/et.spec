@@ -1,12 +1,11 @@
 Name:           et
-Version:        6.2.8
+Version:        6.2.9
 Release:        1
 Summary:        Remote shell that survives IP roaming and disconnect
 
 License:        ASL 2.0
 URL:            https://mistertea.github.io/EternalTerminal/
 Source0:        https://github.com/MisterTea/EternalTerminal/archive/et-v%{version}.tar.gz
-%define sha512  %{name}=0ec06dee3d51e89eb7c03ba062cb771dca228ad06685104361c5e3cc7239a91d67530c95c686c4ede41584ad0f894aa35013499bd3a051b8da7bd0303d4fa9ae
 Patch0:         0001-remove-stdc-fs.patch
 
 BuildRequires:  boost-devel
@@ -54,6 +53,9 @@ install -m 0644 -p systemctl/et.service %{buildroot}%{_unitdir}/et.service
 install -m 0644 -p etc/et.cfg %{buildroot}%{_sysconfdir}/et.cfg
 rm -rf %{buildroot}/usr/lib64/cmake
 rm -f %{buildroot}/usr/include/httplib.h
+rm -f %{buildroot}/usr/lib64/libcrashpad*.a
+rm -f %{buildroot}/usr/lib64/libmini_chromium.a
+rm -f rf %{buildroot}%{_bindir}/crashpad_handler
 
 %post
 %systemd_post et.service
@@ -78,6 +80,8 @@ rm -f %{buildroot}/usr/include/httplib.h
 
 
 %changelog
+* Sat Mar 8 2025 Oliver Kurth <okurth@vmware.com> - 6.2.9-1
+- update to 6.2.9
 * Tue Dec 12 2023 Oliver Kurth <okurth@vmware.com> - 6.2.8-1
 - update to 6.2.8
 * Thu Jun 29 2023 Oliver Kurth <okurth@vmware.com> - 6.2.4-1
