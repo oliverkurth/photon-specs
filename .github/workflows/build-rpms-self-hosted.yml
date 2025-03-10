@@ -1,0 +1,31 @@
+name: build packages self hosted
+
+on: [push, workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: ["self-hosted", "docker:rootless"]
+
+        strategy:
+            fail-fast: false
+            matrix:
+                pkgname:
+                    - rhizofs
+                    - vfat-fuse
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: build
+              run: |
+                  PWD=$(pwd)
+                  mkdir -p photon
+                  docker run --privileged --rm \
+                      -v${PWD}/photon:/usr/src/photon \
+                      -v${PWD}/specs/${{ matrix.pkgname }}:/usr/src/photon/SOURCES \
+                      -v${HOME}/.cache/rpm-builder:/cache \
+                      -v${HOME}/.cache/tdnf-cache:/var/cache/tdnf \
+                      photon/rpm-builder \
+                          build-pkg \
+                          -v 5.0 ${{ matrix.pkgname }} --skip-checksum -o
