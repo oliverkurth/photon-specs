@@ -3,8 +3,17 @@ name: build packages self hosted
 on: [push, workflow_dispatch]
 
 jobs:
+
+    artifact-dir:
+        runs-on: ["self-hosted"]
+        steps:
+            - name: create directory
+              run: mkdir -p ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/{RPMS,SRPMS}
+
     build:
         runs-on: ["self-hosted", "docker:rootless"]
+        needs:
+            - artifact-dir
 
         strategy:
             fail-fast: false
@@ -36,3 +45,18 @@ jobs:
                               build-pkg \
                               -v 5.0 ${pkgname} --skip-checksum -o
                       done
+
+            - name: copy artifacts
+              run: |
+                  rm -rf photon/RPMS/repodata
+                  cp -r photon/RPMS/ ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/
+                  cp -r photon/SRPMS/ ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/
+
+    create-repo:
+        runs-on: ["self-hosted"]
+        needs:
+            - build
+        steps:
+            - name: create repo
+              run: |
+                  cd ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7} && createrepo .
