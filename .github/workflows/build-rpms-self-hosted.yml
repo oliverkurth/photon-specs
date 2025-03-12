@@ -1,0 +1,62 @@
+name: build packages self hosted
+
+on: [push, workflow_dispatch]
+
+jobs:
+
+    artifact-dir:
+        runs-on: ["self-hosted"]
+        steps:
+            - name: create directory
+              run: mkdir -p ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/{RPMS,SRPMS}
+
+    build:
+        runs-on: ["self-hosted", "docker:rootless"]
+        needs:
+            - artifact-dir
+
+        strategy:
+            fail-fast: false
+            matrix:
+                pkgnames:
+                    - rhizofs
+                    - vfat-fuse
+                    - libutempter et
+                    - partfs
+                    - zeromq
+                    - hostapd
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: build
+              run: |
+                  PWD=$(pwd)
+                  mkdir -p photon
+                  for pkgname in ${{ matrix.pkgnames }} ; do
+                      [ -d ${HOME}/sources/${pkgname} ] && cp ${HOME}/sources/${pkgname}/* ${PWD}/specs/${pkgname}/
+                      docker run --privileged --rm \
+                          -v${PWD}/photon:/usr/src/photon \
+                          -v${PWD}/specs/${pkgname}:/usr/src/photon/SOURCES \
+                          -v${HOME}/.cache/rpm-builder:/cache \
+                          -v${HOME}/.cache/tdnf-cache:/var/cache/tdnf \
+                          photon/rpm-builder \
+                              build-pkg \
+                              -v 5.0 ${pkgname} --skip-checksum -o
+                      done
+
+            - name: copy artifacts
+              run: |
+                  rm -rf photon/RPMS/repodata
+                  cp -r photon/RPMS/ ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/
+                  cp -r photon/SRPMS/ ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7}/
+
+    create-repo:
+        runs-on: ["self-hosted"]
+        needs:
+            - build
+        steps:
+            - name: create repo
+              run: |
+                  cd ${HOME}/artifacts/photon-specs/${GITHUB_SHA::7} && createrepo .
