@@ -67,5 +67,5 @@ jobs:
             - name: set symlink for main
               run: |
                   if [[ "${{ github.ref_name }}" == "main" ]] ; then
-                      cd ${HOME}/artifacts/photon-specs/ && ln -fs ${GITHUB_SHA::7} ./main
+                      cd ${HOME}/artifacts/photon-specs/ && rm -f main && ln -fs ${GITHUB_SHA::7} ./main
                   fi
