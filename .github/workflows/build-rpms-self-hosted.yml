@@ -26,6 +26,7 @@ jobs:
                     - zeromq
                     - hostapd
                     - pwgen
+                    - github-runner
 
         steps:
             - name: Checkout code
