@@ -1,0 +1,11 @@
+[Unit]
+Description=GitHub Runner %i
+
+[Service]
+EnvironmentFile=%h/.config/runner.env
+EnvironmentFile=%h/.config/runners/%i.env
+WorkingDirectory=%h
+ExecStart=/usr/local/bin/runner.sh --name %i
+
+[Install]
+WantedBy=default.target
