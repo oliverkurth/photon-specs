@@ -25,6 +25,7 @@ jobs:
                     - partfs
                     - zeromq
                     - hostapd
+                    - pwgen
 
         steps:
             - name: Checkout code
