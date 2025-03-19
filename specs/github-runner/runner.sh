@@ -4,7 +4,7 @@
 GITHUB_BASE_URL=${GITHUB_BASE_URL:-https://github.com}
 GITHUB_API_URL=${GITHUB_API_URL:-https://api.github.com}
 
-RUNNER_TEMPLATE_DIR=${RUNNER_TEMPLATE_DIR:-/opt/github-runner}
+RUNNER_TEMPLATE_DIR=${RUNNER_TEMPLATE_DIR:-/usr/lib/github-runner}
 
 
 acquire_github_token() {

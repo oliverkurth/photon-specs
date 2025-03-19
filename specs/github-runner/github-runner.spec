@@ -23,21 +23,20 @@ Requires: zlib
 GitHub Runner
 
 %install
-mkdir -p %{buildroot}/opt/github-runner/
-tar zxf %{SOURCE0} -C %{buildroot}/opt/github-runner/
+mkdir -p %{buildroot}%{_libdir}/%{name}
+tar zxf %{SOURCE0} -C %{buildroot}%{_libdir}/%{name}
 # not needed, and would generate a dependency on musl
-rm -rf %{buildroot}/opt/github-runner/externals/node20_alpine/
+rm -rf %{buildroot}%{_libdir}/%{name}/externals/node20_alpine/
 
-install -d %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}/%{_bindir} %{buildroot}/%{_userunitdir}
 install -pm 0755 %{SOURCE1} %{buildroot}/%{_bindir}
 install -pm 0755 %{SOURCE2} %{buildroot}/%{_bindir}
-install -d %{buildroot}/%{_userunitdir}
 install -pm 644 %{SOURCE3} %{buildroot}/%{_userunitdir}
 
 %files
 %defattr(-,root,root,-)
-%dir /opt/github-runner/
-/opt/github-runner/*
+%dir %{_libdir}/%{name}
+%{_libdir}/%{name}/*
 %{_bindir}/*
 %{_userunitdir}/*
 
