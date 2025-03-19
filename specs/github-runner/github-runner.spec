@@ -25,6 +25,8 @@ GitHub Runner
 %install
 mkdir -p %{buildroot}/opt/github-runner/
 tar zxf %{SOURCE0} -C %{buildroot}/opt/github-runner/
+# not needed, and would generate a dependency on musl
+rm -rf %{buildroot}/opt/github-runner/externals/node20_alpine/
 
 install -d %{buildroot}/%{_bindir}
 install -pm 0755 %{SOURCE1} %{buildroot}/%{_bindir}
