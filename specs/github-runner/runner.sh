@@ -69,6 +69,7 @@ done
 [ -z ${RUNNER_TOP_DIR} ] && RUNNER_TOP_DIR=.
 
 
+DIRECTORY=${RUNNER_TOP_DIR}/${RUNNER_NAME}
 [ -d ${DIRECTORY} ] || mkdir -p ${DIRECTORY}
 cd ${DIRECTORY}
 
@@ -77,20 +78,18 @@ if [ -d ${RUNNER_TEMPLATE_DIR} ] ; then
     essentials="config.sh run.sh bin externals"
     for f in ${essential} ; do
         [ -f ${RUNNER_TEMPLATE_DIR}/$f ] || fail "no $f in ${RUNNER_TEMPLATE_DIR}"
-    fi
+    done
 
     for d in bin externals ; do
         [ -d $d ] && rm -rf $d
         ln -fs ${RUNNER_TEMPLATE_DIR}/$d .
-    fi
+    done
     for f in $(ls ${RUNNER_TEMPLATE_DIR} | grep -v '^bin$\|^externals$') ; do 
         cp ${RUNNER_TEMPLATE_DIR}/$f .
     done
 else
     [ -f ${RUNNER_TARBALL} ] || fail "file '${RUNNER_TARBALL}' does not exist"
     RUNNER_TARBALL=$(realpath ${RUNNER_TARBALL})
-
-    DIRECTORY=${RUNNER_TOP_DIR}/${RUNNER_NAME}
 
     tar zxf ${RUNNER_TARBALL}
 fi
