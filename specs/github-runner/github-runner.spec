@@ -27,6 +27,8 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 tar zxf %{SOURCE0} -C %{buildroot}%{_libdir}/%{name}
 # not needed, and would generate a dependency on musl
 rm -rf %{buildroot}%{_libdir}/%{name}/externals/node20_alpine/
+# make executable files readable and executable for everyone
+find %{buildroot}%{_libdir}/%{name}/ -perm /u+x -exec chmod ugo+rx {} \;
 
 mkdir -p %{buildroot}/%{_bindir} %{buildroot}/%{_userunitdir}
 install -pm 0755 %{SOURCE1} %{buildroot}/%{_bindir}
