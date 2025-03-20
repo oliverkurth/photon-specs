@@ -5,6 +5,7 @@ GITHUB_BASE_URL=${GITHUB_BASE_URL:-https://github.com}
 GITHUB_API_URL=${GITHUB_API_URL:-https://api.github.com}
 
 RUNNER_TEMPLATE_DIR=${RUNNER_TEMPLATE_DIR:-/usr/lib/github-runner}
+RUNNER_SYMLINK_BINARIES=${RUNNER_SYMLINK_BINARIES:-"false"}
 
 
 acquire_github_token() {
@@ -36,7 +37,7 @@ fail() {
     exit 1
 }
 
-OPTS=$(getopt -o h --long api-url:,base-url:,help,labels:,name:,pat:,repo:,tarball:,top-dir: -n $0 -- "$@")
+OPTS=$(getopt -o h --long api-url:,base-url:,help,labels:,name:,pat:,repo:,sym-link,tarball:,top-dir: -n $0 -- "$@")
 if [ $? != 0 ] ; then
     usage
     echo "Terminating." >&2
@@ -54,6 +55,7 @@ while true; do
         --name)            RUNNER_NAME=${2} ; shift 2 ;;
         --pat)             GITHUB_PAT=${2} ; shift 2 ;;
         --repo)            RUNNER_REPOSITORY=${2} ; shift 2 ;;
+        --symlink)         RUNNER_SYMLINK_BINARIES="true" ; shift ;;
         --tarball)         RUNNER_TARBALL=${2} ; shift 2 ;;
         --top-dir)         RUNNER_TOP_DIR=${2} ; shift 2 ;;
         *)                 break ;;
@@ -82,9 +84,15 @@ if [ -d ${RUNNER_TEMPLATE_DIR} ] ; then
 
     for d in bin externals ; do
         [ -d $d ] && rm -rf $d
-        ln -fs ${RUNNER_TEMPLATE_DIR}/$d .
+        # symlink does not work, see https://github.com/actions/runner/issues/3760
+        if [ "${RUNNER_SYMLINK_BINARIES}" == "true" ] ; then
+            ln -fs ${RUNNER_TEMPLATE_DIR}/$d .
+        else
+            cp -r ${RUNNER_TEMPLATE_DIR}/$d .
+        fi
     done
-    for f in $(ls ${RUNNER_TEMPLATE_DIR} | grep -v '^bin$\|^externals$') ; do 
+
+    for f in $(ls ${RUNNER_TEMPLATE_DIR} | grep -v '^bin$\|^externals$') ; do
         cp ${RUNNER_TEMPLATE_DIR}/$f .
     done
 else
