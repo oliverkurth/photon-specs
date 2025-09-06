@@ -1,0 +1,46 @@
+From d24d8348879055a70460aa072b0e7e65e5702fc9 Mon Sep 17 00:00:00 2001
+From: Peter Robinson <pbrobinson@gmail.com>
+Date: Thu, 31 Oct 2024 23:10:01 +0000
+Subject: [PATCH] Fix the libdir location in the pkgconf files
+
+In some distributions libraries are installed
+into lib64 rather than lib for 64 bit architectures
+so use the cmake variable like we already do
+for the prefix to ensure that's correct for all
+distributions.
+
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+---
+ libmosquitto.pc.in   | 2 +-
+ libmosquittopp.pc.in | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libmosquitto.pc.in b/libmosquitto.pc.in
+index 101a125f..2d8c1a83 100644
+--- a/libmosquitto.pc.in
++++ b/libmosquitto.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+ exec_prefix=${prefix}
+ includedir=${prefix}/include
+-libdir=${exec_prefix}/lib
++libdir=@CMAKE_INSTALL_LIBDIR@
+ 
+ Name: mosquitto
+ Description: mosquitto MQTT library (C bindings)
+diff --git a/libmosquittopp.pc.in b/libmosquittopp.pc.in
+index 6070f44f..ae93e88d 100644
+--- a/libmosquittopp.pc.in
++++ b/libmosquittopp.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+ exec_prefix=${prefix}
+ includedir=${prefix}/include
+-libdir=${exec_prefix}/lib
++libdir=@CMAKE_INSTALL_LIBDIR@
+ 
+ Name: mosquittopp
+ Description: mosquitto MQTT library (C++ bindings)
+-- 
+2.47.0
+
