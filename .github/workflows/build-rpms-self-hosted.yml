@@ -19,13 +19,14 @@ jobs:
             fail-fast: false
             matrix:
                 pkgnames:
+                    - hostapd
+                    - libutempter et
+                    - mosquitto
+                    - partfs
+                    - pwgen
                     - rhizofs
                     - vfat-fuse
-                    - libutempter et
-                    - partfs
                     - zeromq
-                    - hostapd
-                    - pwgen
 
         steps:
             - name: Checkout code
